@@ -15,6 +15,12 @@ public class ThreadPrimeMain {
       while (true) {
         threadList.forEach(thread -> System.out.print(thread.getName() + ": " + thread.getState() + " "));
         System.out.println();
+        if (Thread.interrupted()) {
+          System.out.println("Monitor thread gets interrupted... closing monitoring");
+          break;
+        } else {
+          System.out.println("Thread is not getting interrupted");
+        }
         try {
           Thread.sleep(3000);
         } catch (InterruptedException exception) {

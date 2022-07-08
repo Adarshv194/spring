@@ -3,6 +3,8 @@ package io.adarsh.springdatajpaexp.mycodeschool.sortingAlgorithms;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 // will use the recursion technique where we will keep dividing the array from the mid into two partitions till there is only one element left in the array
 // the following the recursion chain we will keep sort the array and merge them.
@@ -16,7 +18,6 @@ public class MergeSort {
     mergeSort(inputs);
     List<Integer> output = Arrays.stream(inputs).boxed().collect(Collectors.toList());
     output.forEach(value -> System.out.print(value + " ,"));
-
   }
 
   private static void mergeSort(int []inputs) {
@@ -76,7 +77,7 @@ public class MergeSort {
     }
   }
 
-  private static void mergeSortedArraysForLoop(int []inputs, int []leftInputs, int []rightInputs) {
+  private static void mergeSortedArraysUsingForLoop(int []inputs, int []leftInputs, int []rightInputs) {
     int i; // will iterate over leftInputs
     int j; // will iterate over rightInputs
     int k; // will iterate over inputs
@@ -104,6 +105,79 @@ public class MergeSort {
       k++;
       j++;
     }
+  }
+
+  public static void convertStringArrayIntoStringSeperatedBySpace(String input) {
+
+    // code to modify a local variable inside the stream scope
+    var stringWrapper = new Object() {
+      String spaceSeperatedString = new String();
+
+      public String getSpaceSeperatedString() {
+        return spaceSeperatedString;
+      }
+
+      public void setSpaceSeperatedString(String value) {
+        this.spaceSeperatedString += value;
+        this.spaceSeperatedString += " ";
+      }
+    };
+    String[] inputs = input.split(" ");
+    List<String> inputList = Arrays.asList(inputs);
+    inputList.forEach(stringWrapper::setSpaceSeperatedString);
+
+    String convertedString = stringWrapper.getSpaceSeperatedString();
+    System.out.println(convertedString);
+  }
+
+  public static void convertingIntArrayIntoListOfInteger() {
+    IntStream intStream = Arrays.stream(new int[]{1, 2}); // stream of int
+    Stream<Integer> integerStream = intStream.boxed(); // stream of Integer
+    List<Integer> integerList = integerStream.collect(Collectors.toList());
+  }
+
+  public static void convert2DArrayIntoListOfList() {
+    // for String
+
+    String [][]stringArray = new String[][]{
+            {"hello", "everyone"},
+            {"my", "name"},
+            {"is", "Adarsh"},
+            {"Verma"}
+    };
+    Stream<String[]> stringArrayStream = Arrays.stream(stringArray); // stream of String[]
+
+    // conversion to Stream<List<String>>
+    Stream<List<String>> stringListStream = stringArrayStream.map(Arrays::asList); // stream of List<String>
+    List<List<String>> listOfListOfString = stringListStream.collect(Collectors.toList());
+
+    listOfListOfString.forEach(listOfInteger -> {
+      listOfInteger.forEach(System.out::print);
+      System.out.println("");
+    });
+
+    // conversion to Stream<String>
+    Stream<String> stringStream = stringArrayStream.flatMap(Arrays::stream);
+    List<String> stringList = stringStream.collect(Collectors.toList());
+
+    // for int and other types
+    int [][]intArray = new int[][]{{1, 2}, {3, 4}, {5, 6}};
+    Stream<int[]> intArrayStream = Arrays.stream(intArray);
+    // conversion to Stream<IntStream>
+    Stream<IntStream> intStreamStream = intArrayStream.map(Arrays::stream);
+    Stream<List<Integer>> listStream = intStreamStream.map(value -> value.boxed().collect(Collectors.toList()));
+    List<List<Integer>> listOfListOfInteger = listStream.collect(Collectors.toList());
+
+    listOfListOfInteger.forEach(listOfInteger -> {
+      listOfInteger.forEach(System.out::print);
+      System.out.println("");
+    });
+
+    // conversion to Stream<Integer>
+    IntStream intStreams = intArrayStream.flatMapToInt(value -> Arrays.stream(value));
+    Stream<Integer> integerStream = intStreams.boxed();
+    List<Integer> integerList = integerStream.collect(Collectors.toList());
+
   }
 
 }

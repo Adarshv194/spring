@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.serviceES;
+package io.adarsh.springdatajpaexp.service.serviceES;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

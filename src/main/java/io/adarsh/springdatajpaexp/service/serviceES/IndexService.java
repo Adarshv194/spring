@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.serviceES;
+package io.adarsh.springdatajpaexp.service.serviceES;
 
 import io.adarsh.springdatajpaexp.utils.ESUtils;
 import io.adarsh.springdatajpaexp.utils.Indices;

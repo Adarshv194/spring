@@ -1,11 +1,9 @@
 package io.adarsh.springdatajpaexp.controllerES;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.google.gson.JsonElement;
 import io.adarsh.springdatajpaexp.esDTO.SearchRequestDTO;
 import io.adarsh.springdatajpaexp.modelES.Person;
 import io.adarsh.springdatajpaexp.modelES.Vehicle;
-import io.adarsh.springdatajpaexp.serviceES.VehicleService;
+import io.adarsh.springdatajpaexp.service.serviceES.VehicleService;
 import io.adarsh.springdatajpaexp.utils.SearchUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
