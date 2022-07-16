@@ -22,6 +22,8 @@ public class Project {
     @EmbeddedId
     IdName id;
 
+    int t;
+
     @OneToMany(mappedBy = "project")
     List<PayStub> payStubs = new ArrayList<>();
 

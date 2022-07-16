@@ -15,7 +15,7 @@ public class Producer extends Thread{
   @SneakyThrows
   @Override
   public void run() {
-    System.out.println("P");
+//    System.out.println("P");
     synchronized (lock) {
       System.out.println("Control is in Producer");
         for (int i=1; i<=5; i++) {
@@ -33,7 +33,7 @@ public class Producer extends Thread{
           // for inter - communication
           buffer.setValue(i);
           buffer.setSet(true);
-          for (int j=0; j< 100000; j++);
+//          for (int j=0; j< Integer.MAX_VALUE; j++);
           lock.notifyAll();
           lock.wait();
         }
