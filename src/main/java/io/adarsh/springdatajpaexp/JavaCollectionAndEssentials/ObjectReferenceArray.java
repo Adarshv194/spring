@@ -4,6 +4,8 @@ import io.adarsh.springdatajpaexp.model.Project;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, Iterable<String> {
@@ -112,16 +114,16 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         int []intArray2 = new int[]{10, 20, 140, 160, 180, 300};
         int mismatchCount = Arrays.mismatch(intArray1, intArray2);
         System.out.println(mismatchCount);
-
+        // Sorting----
         List<Integer> numberList = Arrays.asList(100, 1, 21, 2, 200, 9);
         numberList.forEach(value -> System.out.print(value + " "));
         System.out.println("");
         System.out.println("Sorting numberList");
         Iterator<Integer> iterator = numberList.iterator();
 //        iterator.next();
-//        numberList.sort(null);
+        numberList.sort(null);
 //        System.out.println("NumberList after calling sort(null)");
-        numberList.sort((o1, o2) -> o2 - o1);
+//        numberList.sort((o1, o2) -> o2 - o1);
         numberList.forEach(value -> System.out.print(value + " "));
 
         System.out.println();
@@ -141,6 +143,8 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         List<Project> projectList = new ArrayList<>();
         projectList.sort((project1, project2) -> project1.getT() - project2.getT());
 
+        // Converting our object into type Iterable so that it can work with for-each loop
+        // and also providing the Iterator object so that for-each loop can call hasNext() and next() method for performing for-each loop
         ObjectReferenceArray obj = new ObjectReferenceArray(10, "A");
         int count = 0;
         for (String element: obj) {
@@ -165,7 +169,7 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
 
         Set<String> stringSet = new HashSet<String>();
         stringSet.add("");
-
+// Iterator ----
         System.out.println("Trying to throw concurrent modification exception");
         numberList.forEach(number -> {
             System.out.println("Deleting number: " + number);
@@ -217,11 +221,99 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         System.out.println("Set size is: " + set.size());
         System.out.println(set);
         System.out.println(set.contains(new ObjectReferenceArray(10, "Adarsh")));
+
+        List<ObjectReferenceArray> objectList = Arrays.asList(
+                new ObjectReferenceArray(100, "Ankit"),
+                new ObjectReferenceArray(10, "Adarsh"),
+                new ObjectReferenceArray(101, "Shubham"),
+                new ObjectReferenceArray(90, "Prashant")
+        );
+
+        System.out.println("Printing object list: ");
+        objectList.forEach(System.out::println);
+
+        System.out.println("Sorting object list using sort()");
+        objectList.sort(null);
+        System.out.println("Printing object list after sorting");
+        objectList.forEach(System.out::println);
+
+        Set<Integer> numberSet = new HashSet<>();
+        numberSet.add(10);
+        numberSet.add(100);
+        numberSet.add(11);
+        numberSet.add(1111);
+        numberSet.add(121);
+        System.out.println("Printing numberList before sorting");
+        numberSet.forEach(value -> System.out.print(value + ", "));
+        Stream<Integer> sorted = numberSet.stream().sorted((val1, val2) -> val1 - val2);
+        System.out.println("Printing numberList after sorting");
+        sorted.forEach(value -> System.out.print(value + ", "));
+        // now if we print the numberSet then it will print the values in the normal sequence without sorting
+        // because when we collect Stream<Integer> to Set then it follows the Set adding mechanism
+        // and add up the values in the set according the hashing and hashcode mechanism and that's why
+        // now printing of set after collecting into set through sorted Stream<Integer> will print the set in normal format as it was earlier unordered(original)
+//        numberSet = sorted.collect(Collectors.toSet());
+
+        Set<ObjectReferenceArray> objectSet = new HashSet<>();
+        objectSet.add(new ObjectReferenceArray(10, "Zakir"));
+        objectSet.add(new ObjectReferenceArray(101, "Adarsh"));
+        objectSet.add(new ObjectReferenceArray(1, "Shubham"));
+        objectSet.add(new ObjectReferenceArray(110, "Tushar"));
+        objectSet.add(new ObjectReferenceArray(190, "Rahul"));
+        objectSet.add(new ObjectReferenceArray(0, "Zakir"));
+
+        System.out.println("Printing object set before sorting");
+        objectSet.forEach(System.out::println);
+        // *** If we are using Comparator.reverseOrder() or Comparator.naturalOrder() then we have to implement the Comparable Interface
+        // internally calls Comparator.naturalOrder() which have a syntax like
+//        compare(Comparable obj1, Comparable obj2) {
+//            return obj1.compareTo(obj2);
+//        }
+//        Stream<ObjectReferenceArray> sortedSetStream = objectSet.stream().sorted();
+        Stream<ObjectReferenceArray> sortedSetStream = objectSet
+                .stream()
+                .sorted((obj1, obj2) -> { // If we provide our custom comparator then it's not compulsory to implement Comparable
+                    System.out.println("Comparator called");
+                    return obj1.getRollNumber() - obj2.getRollNumber();
+                });
+//                .sorted(Comparator.reverseOrder()); // internally calls compareTo ->
+//        compare(Comparable obj1, Comparable obj2) {
+//            return obj2.compareTo(obj1);
+//        }
+//                .sorted((obj1, obj2) -> obj1.getRollNumber() - obj2.getRollNumber());
+        System.out.println(sortedSetStream.getClass().getName());
+        System.out.println("Printing values of set after sorting");
+
+        // *** Stream<ObjectReferenceArray> sortedSetStream; as this point this hasn't called the comparator
+        // and the Stream<ObjectReferenceArray> sortedSetStream object contains which comparator to call and all that
+        sortedSetStream.forEach(System.out::println); // when we access the data from the Stream<ObjectReferenceArray> sortedSetStream
+        // at this point it will call the comparator and sort the values and then provide them.
+        System.out.println("Printing original set");
+        objectSet.forEach(System.out::println);
+
+        // immutable objects before java 9
+        List<String> mutableList = new ArrayList<>();
+        mutableList.add("Adarsh");
+        List<String> immutableList = Collections.unmodifiableList(mutableList);
+        // other immutable objects can also be created using Collections.unmodifiableSet(new HashSet<>());
+        System.out.println(immutableList.getClass().getName());
+        // List which we have passed for immutability, add and other update methods can be called over that list
+        // because Collections.unmodifiableList returns a new instance of type UnmodifiableRandomAccessList
+        mutableList.add("Chicky");
+        // calling add and other update operation on immutableList will throw UnsupportedOperationException
+//        immutuableList.add("Chicky");
+
+        // immutable objects from java 9
+        List<String> immutableList1 = List.of("Adarsh");
+        // will throw an exception UnsupportedOperationException on add and update operations on immutableList
+        immutableList1.add("Verma");
+
     }
 
     @Override
     public int compareTo(ObjectReferenceArray o) {
-        return this.getRollNumber() - o.getRollNumber();
+//        return this.name.compareTo(o.name);
+        return o.getRollNumber() - this.getRollNumber();
     }
    /* @Override
     public Iterator iterator() {
