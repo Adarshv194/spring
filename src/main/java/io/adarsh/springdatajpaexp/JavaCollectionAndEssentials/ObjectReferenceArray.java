@@ -4,13 +4,14 @@ import io.adarsh.springdatajpaexp.model.Project;
 
 
 import java.util.*;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
-public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, Iterable<String> {
+public class ObjectReferenceArray extends Project implements Comparable<ObjectReferenceArray>, Iterable<String> {
 
-     int rollNumber;
+    int rollNumber;
     private String name;
 
     public ObjectReferenceArray(int rollNumber, String name) {
@@ -38,6 +39,7 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
+        System.out.println("Called");
         if (o == null || getClass() != o.getClass()) return false;
         ObjectReferenceArray strings = (ObjectReferenceArray) o;
         return rollNumber == strings.rollNumber && name.equals(strings.name);
@@ -69,7 +71,7 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
 
     @Override
     public Iterator<String> iterator() {
-        return new Iterator(){
+        return new Iterator() {
 
             @Override
             public boolean hasNext() {
@@ -90,6 +92,7 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
             Object o = new Object();
         }
     }
+
     public static void main(String[] args) {
 
         Object[] objectReferenceArray = new Object[5];
@@ -98,7 +101,6 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         objectReferenceArray[2] = new Object();
         objectReferenceArray[3] = new Object();
         objectReferenceArray[4] = new ObjectReferenceArray(10, "");
-
 
 
 //        new ArrayList<String>().forEach();
@@ -110,8 +112,8 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         System.out.println("Converting hashcode into hexString: " + Integer.toHexString(object1.hashCode()));
 //        for (Object o : objectReferenceArray)
 //            System.out.println(o.hashCode());
-        int []intArray1 = new int[]{10, 20, 140, 160, 180, 300};
-        int []intArray2 = new int[]{10, 20, 140, 160, 180, 300};
+        int[] intArray1 = new int[]{10, 20, 140, 160, 180, 300};
+        int[] intArray2 = new int[]{10, 20, 140, 160, 180, 300};
         int mismatchCount = Arrays.mismatch(intArray1, intArray2);
         System.out.println(mismatchCount);
         // Sorting----
@@ -147,7 +149,7 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         // and also providing the Iterator object so that for-each loop can call hasNext() and next() method for performing for-each loop
         ObjectReferenceArray obj = new ObjectReferenceArray(10, "A");
         int count = 0;
-        for (String element: obj) {
+        for (String element : obj) {
             if (count == 9)
                 break;
             System.out.println(element);
@@ -306,8 +308,20 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
         // immutable objects from java 9
         List<String> immutableList1 = List.of("Adarsh");
         // will throw an exception UnsupportedOperationException on add and update operations on immutableList
-        immutableList1.add("Verma");
+//        immutableList1.add("Verma");
 
+        System.out.println("Size of the mutable list: " + mutableList.size());
+        System.out.println("Getting iterator of mutableList:");
+        Iterator<String> mutableListIterator = mutableList.iterator();
+        System.out.println("Adding an element after creating the iterator so that the mutuableList gets modified");
+        mutableList.add("Shubham");
+        System.out.println("Now accessing the iterator after differing the state of mutableList with mutableListIterator");
+        // As Iterator maintains their own state, so it will throw an exception ConcurrentModificationException
+        // if in between the state of the original list gets changed.
+//        mutableListIterator.next();
+
+        collectionTest();
+        listTest();
     }
 
     @Override
@@ -337,4 +351,142 @@ public class ObjectReferenceArray implements Comparable<ObjectReferenceArray>, I
                 ", name='" + name + '\'' +
                 '}';
     }
+
+    public static void collectionTest() {
+        System.out.println("Collection interface methods:");
+        List<String> collection1 = new ArrayList<>();
+        collection1.add("Adarsh");
+        collection1.add("Verma");
+        List<String> collection2 = new ArrayList<>();
+        collection2.addAll(collection1);
+//        System.out.println("Contents in collection2 after calling addAll(collection1)");
+        collection2.add("Verma");
+        collection2.add("Chicky");
+//        collection2.removeAll(collection1);
+//        System.out.println("Contents in collection2 after calling removeAll(collection1)");
+        System.out.println("Contents in collection2 will be same as in contents of collection1 after calling retainAll(collection1)");
+        collection2.retainAll(collection1);
+        System.out.println("Contents in collection2 gets cleared out, there will be no elements in the collection2 after calling clear()");
+        System.out.println("collection2 size before calling clear(): " + collection2.size());
+        System.out.println(collection2);
+        List<String> immutableList = List.of("Verma");
+//        collection2.remove("Verma"); // remove the first element it found, not all duplicates
+        collection2.removeAll(immutableList); // remove all the duplicates
+        System.out.println(collection2);
+        collection2.clear();
+        System.out.println("collection2 size after calling clear(): " + collection2.size());
+        System.out.println(collection2);
+
+        HashSet<String> stringHashSet = new HashSet<>();
+        stringHashSet.addAll(collection1);
+        collection2.addAll(stringHashSet);
+
+        // removing all duplicates from a list  using a set
+        List<Integer> integerList = Arrays.asList(1, 1, 1, 2, 2, 7, 7, 89, 90, 89, 91, 90, 91)
+                .stream()
+                .collect(Collectors.toSet())
+                .stream().collect(Collectors.toList());
+
+        // can also be written as
+        List<Integer> integers = new ArrayList<>(
+                new HashSet<>(Arrays.asList(1, 1, 1, 2, 2, 7, 7, 89, 90, 89, 91, 90, 91)));
+
+        System.out.println(integerList);
+    }
+
+    public static void listTest() {
+        System.out.println("List interface methods");
+        List<String> nullCheckList = new ArrayList<>();
+        nullCheckList.add(null);
+        nullCheckList.add(null);
+        nullCheckList.add("Test");
+        System.out.println(nullCheckList);
+        nullCheckList.replaceAll((value) -> "Constant");
+        System.out.println("Replaced");
+        System.out.println(nullCheckList);
+        // initialized with an empty array instance of size = 0
+        Object[] objectArray = {};
+        System.out.println(objectArray.length);
+        ObjectReferenceArray object = new ObjectReferenceArray(10, "");
+//        Project project = object;
+
+        Project project = object;
+        // throw run time exception Class cast exception
+        // If we don't provide the cast here then the compiler will throw an error but by providing cast
+        // So the compiler is forced to trust the casting
+//        ObjectReferenceArray objectReferenceArray = (ObjectReferenceArray) new Project();
+        // compile time error
+//        ObjectReferenceArray objectReferenceArray = new Project();
+        ObjectReferenceArray objectReferenceArray1 = (ObjectReferenceArray) project;
+        // compiler will throw an error because at compile time compiler can only
+        // that we are casting parent object to child object, but we are parsing the child object can be sure at run-time only
+//        ObjectReferenceArray objectReferenceArray = getProject();
+        ObjectReferenceArray objectReferenceArray = (ObjectReferenceArray) getProject();
+        Project project1 = (Project) object;
+        // by default instacneOf equals check of string will return false
+        System.out.println(nullCheckList.contains(new ObjectReferenceArray(1, "")));
+
+        List<ObjectReferenceArray> list = new ArrayList<>();
+        list.add(new ObjectReferenceArray(10, ""));
+        System.out.println("Checking for different type in contains");
+        System.out.println(list.contains(""));
+        List<ObjectReferenceArray> objectReferenceArrayList = list.subList(0, 1);
+        objectReferenceArrayList.add(new ObjectReferenceArray(1, ""));
+        System.out.println(objectReferenceArrayList);
+
+//        Iterator<ObjectReferenceArray> iterator = objectReferenceArrayList.iterator();
+//        while (iterator.hasNext()) {
+//            ObjectReferenceArray obj = iterator.next();
+//            obj.setRollNumber(100000);
+//        }
+        System.out.println(objectReferenceArrayList);
+
+        List<Integer> integers = new ArrayList<>(
+                new HashSet<>(Arrays.asList(1, 1, 1, 2, 2, 7, 7, 89, 90, 89, 91, 90, 91)));
+        System.out.println(integers);
+        integers.addAll(1, Arrays.asList(0, 0, 0));
+        System.out.println(integers);
+        integers.add(0, 100);
+        System.out.println(integers);
+        Stream<Integer> removing_value = integers.stream()
+                .filter(value -> {
+                    System.out.println("removing value");
+                    integers.remove(value);
+                    return false;
+                });
+        System.out.println(removing_value);
+        // will throw error because stream gets activated when it comes to an end.
+//        removing_value.forEach(System.out::println);
+        System.out.println("Values: " + integers);
+
+        Project[] projectArray = new Project[10];
+        listAdd(0, projectArray, new ObjectReferenceArray(1, "Adarsh"));
+        listAdd(1, projectArray, new ObjectReferenceArray(2, "Chicky"));
+        System.out.println(getList(0, projectArray));
+        System.out.println(getList(1, projectArray));
+        final Project[] finalProjectArray =projectArray;
+        finalProjectArray[1] = null;
+        System.out.println(getList(0, finalProjectArray));
+        System.out.println(getList(1, finalProjectArray));
+        // updation over the final array  can be done but the reference variable can not be replace with other array instance
+//        finalProjectArray = new Project[4];
+    }
+
+    public static void listAdd(int index, Project[] projectArray, ObjectReferenceArray objectReferenceArray) {
+        projectArray[index] = objectReferenceArray;
+    }
+
+    public static ObjectReferenceArray getList(int index, Project[] projectArray) {
+        return (ObjectReferenceArray) projectArray[index];
+    }
+
+    public static Project getProject() {
+        return new ObjectReferenceArray(1, "");
+    }
+
+    public void ClassThisTest() {
+        ObjectReferenceArray.this.setRollNumber(10);
+    }
+
+
 }
