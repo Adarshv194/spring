@@ -4,6 +4,16 @@ public class Buffer {
 
   private int value;
   private boolean isSet = true;
+  private int volatileValue;
+  private int set;
+
+  public int getSet() {
+    return set;
+  }
+
+  public void setSet(int set) {
+    this.set = set;
+  }
 
   public /*synchronized*/ int getValue() throws InterruptedException {
     return value;
@@ -25,5 +35,13 @@ public class Buffer {
 
   public void setSet(boolean set) {
     isSet = set;
+  }
+
+  public int getVolatileValue() {
+    return volatileValue;
+  }
+
+  public void setVolatileValue(int volatileValue) {
+    this.volatileValue = volatileValue;
   }
 }

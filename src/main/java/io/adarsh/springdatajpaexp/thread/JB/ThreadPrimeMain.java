@@ -34,7 +34,6 @@ public class ThreadPrimeMain {
 //    monitorThreadState.setDaemon(true);
     monitorThreadState.start();
 
-
     Scanner scObj = new Scanner(System.in);
     while(true) {
       System.out.println("Enter the nth number to find the prime");
@@ -62,7 +61,7 @@ public class ThreadPrimeMain {
       try {
         System.out.println("Joining " + thread.getName() + " thread running in: " + Thread.currentThread());
         // The main thread will get on WAITING state in this case while only it will join the streamed One thread and do it turn by turn
-        thread.join();
+        thread.join(10000);
       } catch (InterruptedException exception) {
         System.out.println("Got interrupted while waiting for joined threads to gets completed. Quiting now..");
       }

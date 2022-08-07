@@ -7,8 +7,11 @@ public class Printer {
         for (int i=1; i<=30; i++)
             System.out.print(ch);
         try {
+//            System.out.println(Thread.currentThread().getName() + " is going for a sleep of 1000 ms");
             Thread.sleep(1000);
-        } catch (InterruptedException exception) {}
+        } catch (InterruptedException exception) {
+            System.out.println(Thread.currentThread().getName() + " - Thread gets interrupted while in sleep state");
+        }
         // remaining half line is printed
         for (int i=1; i<=30; i++)
             System.out.print(ch);

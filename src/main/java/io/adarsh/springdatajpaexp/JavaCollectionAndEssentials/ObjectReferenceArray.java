@@ -4,7 +4,6 @@ import io.adarsh.springdatajpaexp.model.Project;
 
 
 import java.util.*;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,7 +46,8 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
 
     @Override
     public int hashCode() {
-        return Objects.hash(rollNumber, name);
+        return 0;
+//        return Objects.hash(rollNumber, name);
     }
 
     //  Intellij Default
@@ -322,6 +322,8 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
 
         collectionTest();
         listTest();
+        setTest();
+        mapTest();
     }
 
     @Override
@@ -415,6 +417,7 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         // If we don't provide the cast here then the compiler will throw an error but by providing cast
         // So the compiler is forced to trust the casting
 //        ObjectReferenceArray objectReferenceArray = (ObjectReferenceArray) new Project();
+//        Project project10 = (ObjectReferenceArray) new Project();
         // compile time error
 //        ObjectReferenceArray objectReferenceArray = new Project();
         ObjectReferenceArray objectReferenceArray1 = (ObjectReferenceArray) project;
@@ -468,8 +471,13 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         finalProjectArray[1] = null;
         System.out.println(getList(0, finalProjectArray));
         System.out.println(getList(1, finalProjectArray));
-        // updation over the final array  can be done but the reference variable can not be replace with other array instance
+        // updation over the final array  can be done but the reference variable can not be replaced with other array instance
 //        finalProjectArray = new Project[4];
+
+        // LinkedList
+
+        List<String> stringLinkedList = new LinkedList<>();
+
     }
 
     public static void listAdd(int index, Project[] projectArray, ObjectReferenceArray objectReferenceArray) {
@@ -486,6 +494,39 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
 
     public void ClassThisTest() {
         ObjectReferenceArray.this.setRollNumber(10);
+    }
+
+    public static void setTest() {
+        System.out.println("Set interface methods");
+        HashSet<String> stringHashSet = new HashSet<>();
+        System.out.println("New value added in set: " + stringHashSet.add("Adarsh"));
+        System.out.println("Duplicate value added in set: " + stringHashSet.add("Adarsh"));
+//        int h =(12345) ^ (12345 & 15);
+        int h = 15 & 0;
+        System.out.println("index: " + h);
+    }
+
+    public static void mapTest() {
+        Map<ObjectReferenceArray, String> hashMap = new HashMap<>();
+        System.out.println("New value: " + hashMap.put(new ObjectReferenceArray(1, ""), "waiting for COE"));
+        System.out.println("Duplicate value: " + hashMap.put(new ObjectReferenceArray(1, ""), "waiting for COE"));
+        hashMap.put(null, null);
+        hashMap.put(null, "Actual Value bro...");
+        System.out.println(hashMap.size());
+//        Set<String> strings = hashMap.keySet();
+//        System.out.println(strings);
+//        System.out.println("invalid key value: " + hashMap.get(""));
+//        strings.forEach(value -> System.out.println(hashMap.get(value)));
+        if (null == null) {
+            System.out.println("Working");
+        }
+        // keyIterator instance
+        System.out.println(hashMap.keySet().iterator());
+        Set<Map.Entry<ObjectReferenceArray, String>> entries = hashMap.entrySet();
+        entries.forEach(entry -> {
+            System.out.println(entry);
+        });
+        System.out.println(entries);
     }
 
 

@@ -10,19 +10,22 @@ public class ProducerConsumerMain {
     Thread monitorThread = new Thread(() -> {
       while (true) {
         if (Thread.currentThread().isInterrupted()) {
-          System.out.println("Interruption......");
-//          break;
+          System.out.println("Monitor Thread interruption state in isInterrupted if check: " + Thread.currentThread().isInterrupted());
+          System.out.println("Interruption......breaking out of the loop");
+          break;
         } else {
-          threadList.forEach(thread -> System.out.print(thread.getName() + ": is in - " + thread.getState() + ", "));
-          System.out.println("");
+          threadList.forEach(thread -> {
+            System.out.print(thread.getName() + ": is in - " + thread.getState() + ", ");
+          });
+          System.out.println("Interruption:::::::::::::");
           try {
             Thread.sleep(100);
           } catch (InterruptedException interruptedException) {
             System.out.println("Monitor thread gets interrupted: handling in catch");
-            interruptedException.printStackTrace();
+//            interruptedException.printStackTrace();
             System.out.println("Monitor thread is in: " + Thread.currentThread().getState() + " STATE and its interruption status in catch block gets changed to: " + Thread.currentThread().isInterrupted());
             System.out.println("Interrupting it again ");
-            Thread.currentThread().interrupt();
+//            Thread.currentThread().interrupt();
 //          break;
         }
         }
@@ -40,8 +43,10 @@ public class ProducerConsumerMain {
     producer.setName("Producer Thread");
     threadList.add(consumer);
     threadList.add(producer);
-    monitorThread.setDaemon(true);
+//    monitorThread.setDaemon(true);
 //    monitorThread.setPriority(10);
+    System.out.println("Setting the main thread as a daemon thread before starting any of the other threads");
+//    Thread.currentThread().setDaemon(true);
     monitorThread.start();
     consumer.start();
     producer.start();
