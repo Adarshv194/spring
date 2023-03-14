@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.mycodeschool.searchingAlgorithms;
+package io.adarsh.springdatajpaexp.repos.mycodeschool.searchingAlgorithms;
 
 import io.adarsh.springdatajpaexp.DTO.OccurrenceDTO;
 

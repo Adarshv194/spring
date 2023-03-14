@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.mycodeschool.searchingAlgorithms;
+package io.adarsh.springdatajpaexp.repos.mycodeschool.searchingAlgorithms;
 
 import java.util.Scanner;
 

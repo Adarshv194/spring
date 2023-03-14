@@ -6,6 +6,7 @@ import io.adarsh.springdatajpaexp.enums.EmployeeType;
 import io.adarsh.springdatajpaexp.model.*;
 import io.adarsh.springdatajpaexp.repos.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+//@Scope(value = "prototype")
 @Service
 public class EmployeeService {
 

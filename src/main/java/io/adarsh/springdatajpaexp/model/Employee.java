@@ -95,6 +95,11 @@ public class Employee {
     @CollectionId(column = @Column(name = "ADDRESS_ID"), generator ="sequence", type = @Type(type = "long"))
     Collection<Address> addresses = new ArrayList<>();
 
+    @Transient
+    List<Integer> numbers = new ArrayList<>();
+
+    int salary;
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -125,5 +130,11 @@ public class Employee {
 
     public void deletePayStub(List<PayStub> payStubs) {
         this.payStubs.removeAll(payStubs);
+    }
+
+    public Employee(String name, List<Integer> numbers, int salary) {
+        this.numbers = numbers;
+        this.name = name;
+        this.salary = salary;
     }
 }

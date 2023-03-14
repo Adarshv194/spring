@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.mycodeschool.sortingAlgorithms;
+package io.adarsh.springdatajpaexp.repos.mycodeschool.sortingAlgorithms;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +15,7 @@ public class MergeSort {
     /// then call the method to merge those two left and right arrays.
     /// TODO: write a method to merge two sorted arrays so that the merged array will also be a sorted array.
     int []inputs = new int[]{2, 4, 1, 6, 8, 5, 3, 7};
+//    List<int[]> ints = Arrays.asList(inputs);
     mergeSort(inputs);
     List<Integer> output = Arrays.stream(inputs).boxed().collect(Collectors.toList());
     output.forEach(value -> System.out.print(value + " ,"));
@@ -124,13 +125,14 @@ public class MergeSort {
     };
     String[] inputs = input.split(" ");
     List<String> inputList = Arrays.asList(inputs);
-    inputList.forEach(stringWrapper::setSpaceSeperatedString);
+    inputList.forEach(value -> stringWrapper.setSpaceSeperatedString(value));
 
     String convertedString = stringWrapper.getSpaceSeperatedString();
     System.out.println(convertedString);
   }
 
   public static void convertingIntArrayIntoListOfInteger() {
+//    Stream<Object> stream = Arrays.stream(new Object[]{});
     IntStream intStream = Arrays.stream(new int[]{1, 2}); // stream of int
     Stream<Integer> integerStream = intStream.boxed(); // stream of Integer
     List<Integer> integerList = integerStream.collect(Collectors.toList());
@@ -157,14 +159,14 @@ public class MergeSort {
     });
 
     // conversion to Stream<String>
-    Stream<String> stringStream = stringArrayStream.flatMap(Arrays::stream);
+    Stream<String> stringStream = stringArrayStream.flatMap(array -> Arrays.stream(array));
     List<String> stringList = stringStream.collect(Collectors.toList());
 
     // for int and other types
     int [][]intArray = new int[][]{{1, 2}, {3, 4}, {5, 6}};
     Stream<int[]> intArrayStream = Arrays.stream(intArray);
     // conversion to Stream<IntStream>
-    Stream<IntStream> intStreamStream = intArrayStream.map(Arrays::stream);
+    Stream<IntStream> intStreamStream = intArrayStream.map(array -> Arrays.stream(array));
     Stream<List<Integer>> listStream = intStreamStream.map(value -> value.boxed().collect(Collectors.toList()));
     List<List<Integer>> listOfListOfInteger = listStream.collect(Collectors.toList());
 

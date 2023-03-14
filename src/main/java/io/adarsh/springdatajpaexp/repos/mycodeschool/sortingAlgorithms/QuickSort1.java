@@ -1,4 +1,4 @@
-package io.adarsh.springdatajpaexp.mycodeschool.sortingAlgorithms;
+package io.adarsh.springdatajpaexp.repos.mycodeschool.sortingAlgorithms;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

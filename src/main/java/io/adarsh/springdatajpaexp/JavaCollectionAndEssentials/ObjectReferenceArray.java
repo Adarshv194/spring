@@ -1,6 +1,8 @@
 package io.adarsh.springdatajpaexp.JavaCollectionAndEssentials;
 
+import io.adarsh.springdatajpaexp.embeddable.IdName;
 import io.adarsh.springdatajpaexp.model.Project;
+import org.springframework.context.ApplicationContext;
 
 
 import java.util.*;
@@ -37,6 +39,7 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
     // By Java 7
     @Override
     public boolean equals(Object o) {
+
         if (this == o) return true;
         System.out.println("Called");
         if (o == null || getClass() != o.getClass()) return false;
@@ -102,6 +105,14 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         objectReferenceArray[3] = new Object();
         objectReferenceArray[4] = new ObjectReferenceArray(10, "");
 
+        ObjectReferenceArray obj11 = new ObjectReferenceArray(1, "Adarsh");
+        obj11.setId(new IdName("Adarsh", "Verma"));
+        ObjectReferenceArray obj12 = new ObjectReferenceArray(1, "Adarsh");
+        obj12.setId(new IdName("Chicky", "Verma"));
+        Set<ObjectReferenceArray> set11 = new HashSet<>();
+        set11.add(obj11);
+        set11.add(obj12);
+        System.out.println("Printing SET" + set11);
 
 //        new ArrayList<String>().forEach();
 //        Iterator<String> iterator = new LinkedList<String>().forEach();
@@ -149,13 +160,13 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         // and also providing the Iterator object so that for-each loop can call hasNext() and next() method for performing for-each loop
         ObjectReferenceArray obj = new ObjectReferenceArray(10, "A");
         int count = 0;
-        for (String element : obj) {
+        for (String element : obj) { // 2 operation of iterator gets called at this line hasNext() and next()
             if (count == 9)
                 break;
             System.out.println(element);
             count++;
         }
-        List<ObjectReferenceArray> objectArrayList = new ArrayList<>();
+        List<ObjectReferenceArray> objectArrayList = new ArrayList<ObjectReferenceArray>();
         objectArrayList.add(new ObjectReferenceArray(10, "Adarsh"));
         objectArrayList.add(new ObjectReferenceArray(1, "Chicky"));
         System.out.println("Before sorting");
@@ -173,6 +184,7 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         stringSet.add("");
 // Iterator ----
         System.out.println("Trying to throw concurrent modification exception");
+        System.out.println("List size before removing an element: " + numberList.size());
         numberList.forEach(number -> {
             System.out.println("Deleting number: " + number);
 //            numberList.remove(number);
@@ -185,12 +197,20 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         integerList.add(2);
         integerList.add(3);
         integerList.add(3);
+
         System.out.println("IntegerList is an object of type: " + integerList.getClass().getName());
         Iterator<Integer> iterator1 = integerList.iterator();
-        System.out.println("Iterator1 is of class: " + iterator.getClass().getName());
+        System.out.println("Integer list iterator is of class: " + iterator1.getClass().getName());
         System.out.println("StringSet is an object of type: " + stringSet.getClass().getName());
         Iterator<String> iterator2 = stringSet.iterator();
         System.out.println("Iterator2 is of class: " + iterator2.getClass().getName());
+
+        System.out.println("Integer list size before deletion: " + integerList.size());
+        integerList.forEach(element -> {
+            System.out.println("Deleting number from the integer list:");
+            integerList.remove(element);
+            System.out.println("Integer list size after deletion: " + integerList.size());
+        });
 
         Map<String, String> hashMap = new HashMap<String, String>();
         Collection<String> values = hashMap.values();
@@ -297,6 +317,7 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         List<String> mutableList = new ArrayList<>();
         mutableList.add("Adarsh");
         List<String> immutableList = Collections.unmodifiableList(mutableList);
+//        Collections.sort(new ArrayList<String>(), (o1, o2) -> o2.compareTo(o1));
         // other immutable objects can also be created using Collections.unmodifiableSet(new HashSet<>());
         System.out.println(immutableList.getClass().getName());
         // List which we have passed for immutability, add and other update methods can be called over that list
@@ -351,6 +372,7 @@ public class ObjectReferenceArray extends Project implements Comparable<ObjectRe
         return "ObjectReferenceArray{" +
                 "rollNumber=" + rollNumber +
                 ", name='" + name + '\'' +
+                ", id='" + getId() + '\'' +
                 '}';
     }
 

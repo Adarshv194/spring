@@ -1,9 +1,8 @@
 package io.adarsh.springdatajpaexp.thread.JB;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Emp {
@@ -65,6 +64,7 @@ public class Emp {
         List<Emp> empList = Arrays.asList(new Emp("Adarsh", 24, null, 400000));
         // female salary less than 30
 
+        empList.stream().collect(Collectors.toMap((emp -> emp), (emp -> emp.getName())));
         empList.stream().collect(Collectors.toMap((emp -> emp), emp -> emp.getSalary()));
 
         List<String> femaleList = empList.stream().filter(emp -> (emp.getSalary() < 30) && "Female".equals(emp.gender))

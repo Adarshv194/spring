@@ -31,7 +31,7 @@ public class Consumer extends Thread {
         System.out.println("Consumer consumes: " + consumedValue);
         buffer.setSet(false);
         // whenever we are gonna call notify() or wait() we have to call on the monitor lock object
-        // on which we are taking the lock because it's the lock monitor threads are using for executing the code synchronized
+        // on which we are taking the lock because it's the lock monitor which threads are using for executing the code synchronized
         // for inter - communication
         System.out.println("After consuming , producer thread state before getting notified: " + producerThread.getState());
         lock.notifyAll();
